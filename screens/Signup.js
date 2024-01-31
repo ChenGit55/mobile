@@ -9,17 +9,13 @@ import {
   View,
 } from "react-native";
 
+import styles from "../styles/CustomStyles";
+
 const Signup = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ justifyContent: "center", height: "100%" }}>
-      <KeyboardAvoidingView
-        style={{
-          padding: 20,
-          justifyContent: "space-evenly",
-          //   backgroundColor: "red",
-        }}
-      >
-        <View style={{ marginVertical: 15 }}>
+    <SafeAreaView style={[styles.screenContainer]}>
+      <KeyboardAvoidingView style={[styles.forms]}>
+        <View style={[styles.formFields]}>
           <View
             style={{
               alignItems: "center",
@@ -28,39 +24,33 @@ const Signup = ({ navigation }) => {
           >
             <Image
               source={require("../assets/logo.jpeg")}
-              style={{
-                width: 200,
-                height: 200,
-                borderRadius: 100,
-                borderWidth: 10,
-                borderColor: "aqua",
-              }}
+              style={[styles.logo]}
             />
           </View>
-          <View style={{ marginVertical: 15 }}>
+          <View style={[styles.formFields]}>
             {/* <Text>Email</Text> */}
             <TextInput
-              style={{ borderWidth: 1 }}
+              style={[styles.textInput]}
               placeholder="Your name herer"
             ></TextInput>
           </View>
 
-          <View style={{ marginVertical: 15 }}>
+          <View style={[styles.formFields]}>
             {/* <Text>Email</Text> */}
             <TextInput
-              style={{ borderWidth: 1 }}
+              style={[styles.textInput]}
               placeholder="Your@email.com"
             ></TextInput>
           </View>
-          <View style={{ marginVertical: 15 }}>
+          <View style={[styles.formFields]}>
             {/* <Text>Password</Text> */}
             <TextInput
-              style={{ borderWidth: 1 }}
+              style={[styles.textInput]}
               secureTextEntry={true}
               placeholder="Password"
             ></TextInput>
           </View>
-          <View style={{ marginVertical: 15 }}>
+          <View style={[styles.formFields]}>
             <Button title="Save" />
           </View>
         </View>

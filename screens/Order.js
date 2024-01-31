@@ -1,10 +1,9 @@
 import { Button, SafeAreaView, Text } from "react-native";
+import styles from "../styles/CustomStyles";
 
 const Order = ({ navigation }) => {
   return (
-    <SafeAreaView
-      style={{ justifyContent: "center", height: "100%", alignItems: "center" }}
-    >
+    <SafeAreaView style={[styles.screenContainer]}>
       <Text>Order Screen</Text>
     </SafeAreaView>
   );

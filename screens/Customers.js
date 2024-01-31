@@ -1,10 +1,9 @@
 import { SafeAreaView, Text, View } from "react-native";
+import styles from "../styles/CustomStyles";
 
 const Customers = ({ navigation }) => {
   return (
-    <SafeAreaView
-      style={{ justifyContent: "center", height: "100%", alignItems: "center" }}
-    >
+    <SafeAreaView style={[styles.screenContainer]}>
       <View>
         <Text>Customers Screen</Text>
       </View>

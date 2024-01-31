@@ -12,6 +12,7 @@ function MyTabs() {
       screenOptions={{
         headerTitleAlign: "center",
         tabBarStyle: { marginBottom: 20 },
+        tabBarIcon: () => null,
       }}
     >
       <Tab.Screen name="Customers" component={Customers} />

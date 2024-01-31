@@ -5,18 +5,19 @@ import {
   SafeAreaView,
   TextInput,
   View,
+  Text,
 } from "react-native";
 import styles from "../styles/CustomStyles";
 import axios from "axios";
 import { useState } from "react";
 
 const Signup = ({ navigation }) => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [nameError, setNameError] = useState();
-  const [emailError, setEmailError] = useState();
-  const [passwordError, setPasswordError] = useState();
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   const validate = () => {
     let error = false;
@@ -24,48 +25,56 @@ const Signup = ({ navigation }) => {
     setEmailError(null);
     setPasswordError(null);
 
-    if (name === "") {
+    if (name === "" || name === null) {
       console.log("Invalid name!");
       setNameError("Please enter a valide name.");
       error = true;
     }
-    if (email === "") {
+    if (email === "" || email === null) {
       console.log("Invalid email!");
       setEmailError("Please enter a valide email.");
       error = true;
     }
-    if (password === "") {
+    if (password === "" || password === null || password.includes(" ")) {
       console.log("Invalid password!");
       setPasswordError("Please enter a valide password.");
       error = true;
     }
+    console.log(!error, name);
 
     return !error;
   };
 
   const newUser = () => {
-    let data = {
-      name: name,
-      email: email,
-      password: password,
-    };
-
     if (validate()) {
-      axios({
+      let data = {
+        name: name,
+        email: email,
+        password: password,
+      };
+
+      signUp(data)
+        .then((response) => {
+          console.log("Success");
+        })
+        .catch((error) => {
+          console.log("Error");
+        });
+    }
+  };
+
+  const signUp = async (data) => {
+    try {
+      const response = await axios({
         url: "http://192.168.1.3:3000/user/new",
         method: "POST",
         timeout: 5000,
         data: data,
         headers: { Accept: "application/json" },
-      })
-        .then((response) => {
-          return Promise.resolve(response);
-        })
-        .catch((error) => {
-          return Promise.reject(error);
-        });
-    } else {
-      console.log("erro");
+      });
+      return await Promise.resolve(response);
+    } catch (error) {
+      return await Promise.reject(error);
     }
   };
 
@@ -85,16 +94,18 @@ const Signup = ({ navigation }) => {
             />
           </View>
           <View style={[styles.formFields]}>
-            {/* <Text>Email</Text> */}
+            {/* <Text>Name</Text> */}
             <TextInput
               style={[styles.textInput]}
               placeholder="Your name herer"
               onChangeText={(value) => {
-                setName(value);
+                setName(value.trim());
                 setNameError(null);
               }}
-              errorMessage={nameError}
             ></TextInput>
+            {nameError !== null && (
+              <Text style={{ color: "red" }}>{nameError}</Text>
+            )}
           </View>
 
           <View style={[styles.formFields]}>
@@ -102,9 +113,14 @@ const Signup = ({ navigation }) => {
             <TextInput
               style={[styles.textInput]}
               placeholder="Your@email.com"
-              onChangeText={(value) => setEmail(value)}
-              errorMessage={emailError}
+              onChangeText={(value) => {
+                setEmail(value.trim());
+                setEmailError(null);
+              }}
             ></TextInput>
+            {emailError !== null && (
+              <Text style={{ color: "red" }}>{emailError}</Text>
+            )}
           </View>
           <View style={[styles.formFields]}>
             {/* <Text>Password</Text> */}
@@ -112,9 +128,14 @@ const Signup = ({ navigation }) => {
               style={[styles.textInput]}
               secureTextEntry={true}
               placeholder="Password"
-              onChangeText={(value) => setPassword(value)}
-              errorMessage={passwordError}
+              onChangeText={(value) => {
+                setPassword(value);
+                setPasswordError(null);
+              }}
             ></TextInput>
+            {passwordError !== null && (
+              <Text style={{ color: "red" }}>{passwordError}</Text>
+            )}
           </View>
           <View style={[styles.formFields]}>
             <Button title="Save" onPress={newUser} />

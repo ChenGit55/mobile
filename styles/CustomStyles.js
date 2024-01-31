@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
 
   formFields: {
-    marginVertical: 15,
+    marginVertical: 5,
   },
 
   logo: {

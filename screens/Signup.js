@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   TextInput,
+  Alert,
   View,
   Text,
 } from "react-native";
@@ -40,7 +41,6 @@ const Signup = ({ navigation }) => {
       setPasswordError("Please enter a valide password.");
       error = true;
     }
-    console.log(!error, name);
 
     return !error;
   };
@@ -56,6 +56,14 @@ const Signup = ({ navigation }) => {
       signUp(data)
         .then((response) => {
           console.log("Success");
+          Alert.alert("Success!", "User registration complete", [
+            {
+              text: "OK",
+              onPress: () => {
+                navigation.navigate("Login");
+              },
+            },
+          ]);
         })
         .catch((error) => {
           console.log("Error");

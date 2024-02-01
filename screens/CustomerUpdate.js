@@ -7,6 +7,8 @@ import {
   View,
 } from "react-native";
 import styles from "../styles/CustomStyles";
+import { useRoute } from "@react-navigation/native";
+import { useState } from "react";
 import axios from "axios";
 
 const CustomerUpdate = ({ navigation }) => {

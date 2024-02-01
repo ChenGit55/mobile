@@ -2,7 +2,6 @@ import {
   Button,
   Image,
   KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   Text,
   TextInput,
@@ -16,6 +15,8 @@ import { useState } from "react";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+
+  const [authError, setAuthError] = useState(false);
 
   let data = {
     email: email,
@@ -33,8 +34,10 @@ const Login = ({ navigation }) => {
       });
       console.log(response.status);
       navigation.navigate("Main");
+      setAuthError(false);
       return await Promise.resolve(response);
     } catch (error) {
+      setAuthError(true);
       console.log(error);
     }
   };
@@ -51,7 +54,9 @@ const Login = ({ navigation }) => {
               style={[styles.logo]}
             />
           </View>
-
+          {authError && (
+            <Text style={{ color: "red" }}>Invalid email or password!</Text>
+          )}
           <View style={[styles.formFields]}>
             {/* <Text>Email</Text> */}
             <TextInput
@@ -87,5 +92,4 @@ const Login = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
 export default Login;

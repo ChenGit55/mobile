@@ -10,10 +10,33 @@ import {
   View,
 } from "react-native";
 import styles from "../styles/CustomStyles";
+import axios from "axios";
+import { useState } from "react";
 
 const Login = ({ navigation }) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  let data = {
+    email: email,
+    password: password,
+  };
+
   const loginHandle = async () => {
-    navigation.navigate("Main");
+    try {
+      const response = await axios({
+        url: "http://192.168.1.3:3000/user/login",
+        method: "POST",
+        timeout: 5000,
+        data: data,
+        headers: { Accept: "application/json" },
+      });
+      console.log(response.status);
+      navigation.navigate("Main");
+      return await Promise.resolve(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const signUpHandle = async () => {
     navigation.navigate("Signup");
@@ -34,6 +57,9 @@ const Login = ({ navigation }) => {
             <TextInput
               style={[styles.textInput]}
               placeholder="Your@email.com"
+              onChangeText={(value) => {
+                setEmail(value);
+              }}
             ></TextInput>
           </View>
           <View style={[styles.formFields]}>
@@ -42,6 +68,9 @@ const Login = ({ navigation }) => {
               style={[styles.textInput]}
               secureTextEntry={true}
               placeholder="Password"
+              onChangeText={(value) => {
+                setPassword(value);
+              }}
             ></TextInput>
           </View>
           <View style={[styles.formFields]}>

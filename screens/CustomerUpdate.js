@@ -7,10 +7,9 @@ import {
   View,
 } from "react-native";
 import styles from "../styles/CustomStyles";
-import { useRoute } from "@react-navigation/native";
-import { useState } from "react";
+import axios from "axios";
 
-const CustomerUpdate = () => {
+const CustomerUpdate = ({ navigation }) => {
   const route = useRoute();
   const { customer } = route.params;
 
@@ -29,6 +28,28 @@ const CustomerUpdate = () => {
   if (newCpf === null) {
     setNewCpf(customer.cpf);
   }
+
+  let newCostomerData = {
+    name: newName,
+    email: newEmail,
+    cpf: newCpf,
+  };
+
+  const saveNewCustomer = async () => {
+    try {
+      const response = await axios({
+        url: `http://192.168.1.3:3000/client/update/${customer.id}`,
+        method: "PUT",
+        timeout: 5000,
+        data: newCostomerData,
+        headers: { Accept: "application/json" },
+      });
+      navigation.navigate("Customers");
+      return await Promise.resolve(response);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  };
 
   return (
     <SafeAreaView style={[styles.screenContainer]}>
@@ -63,6 +84,7 @@ const CustomerUpdate = () => {
             }}
           ></TextInput>
         </View>
+        <Button title="Save" onPress={saveNewCustomer} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

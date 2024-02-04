@@ -7,6 +7,7 @@ import Signup from "./screens/Signup";
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Profile from "./screens/Profile";
 
 function defineInterceptor() {
   axios.interceptors.response.use(
@@ -52,6 +53,11 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ headerShown: true, headerLeft: () => "" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

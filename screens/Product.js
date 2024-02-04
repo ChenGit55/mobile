@@ -1,21 +1,15 @@
-import { Button, SafeAreaView, Text } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import styles from "../styles/CustomStyles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 
 const Products = ({ navigation }) => {
-  const logoutHandle = () => {
-    AsyncStorage.setItem("TOKEN", "").then(
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      })
-    );
-  };
-
   return (
     <SafeAreaView style={[styles.screenContainer]}>
-      <Text>Product Screen</Text>
-      <Button title="Logout" onPress={logoutHandle} />
+      <TouchableOpacity>
+        <View>
+          <FontAwesome6Icon name="recycle" size={30} color="#900" />
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

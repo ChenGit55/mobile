@@ -12,6 +12,7 @@ import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomerUpdate from "./CustomerUpdate";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 
 const Customers = ({ navigation }) => {
   const [customers, setCustomers] = useState(null);
@@ -42,8 +43,29 @@ const Customers = ({ navigation }) => {
       <View
         style={{
           width: "100%",
+          marginTop: 40,
+          padding: 20,
         }}
       >
+        <View
+          style={{
+            alignItems: "flex-end",
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 40,
+              borderWidth: 1,
+              borderBlockColor: "green",
+              borderRadius: 50,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome6Icon name="plus" size={30} color="green" />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={customers}
           keyExtractor={(item) => item.id.toString()}
@@ -52,7 +74,6 @@ const Customers = ({ navigation }) => {
               style={{
                 borderWidth: 1,
                 borderRadius: 20,
-                marginHorizontal: 20,
                 marginVertical: 5,
                 padding: 20,
               }}

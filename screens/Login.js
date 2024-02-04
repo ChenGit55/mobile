@@ -34,8 +34,9 @@ const Login = ({ navigation }) => {
         headers: { Accept: "application/json" },
       });
       console.log(response.status);
-
       AsyncStorage.setItem("TOKEN", response.data.access_token);
+      AsyncStorage.setItem("NAME", response.data.name);
+      AsyncStorage.setItem("EMAIL", response.data.email);
 
       navigation.reset({
         index: 0,

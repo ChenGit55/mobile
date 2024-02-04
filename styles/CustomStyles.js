@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: "100%",
     alignItems: "center",
+    backgroundColor: "white",
   },
 
   forms: {
@@ -19,9 +20,10 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 200,
+    padding: 10,
     borderRadius: 100,
-    borderWidth: 10,
-    borderColor: "aqua",
+    borderWidth: 5,
+    borderColor: "gray",
   },
 
   textInput: {

@@ -11,8 +11,13 @@ function MyTabs() {
     <Tab.Navigator
       screenOptions={{
         headerTitleAlign: "center",
-        tabBarStyle: { marginBottom: 20 },
+        tabBarStyle: {
+          paddingBottom: 20,
+          borderTopWidth: 0,
+          shadowColor: 0,
+        },
         tabBarIcon: () => null,
+        headerStyle: { height: 80 },
       }}
     >
       <Tab.Screen name="Customers" component={Customers} />

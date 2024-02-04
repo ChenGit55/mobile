@@ -16,6 +16,13 @@ const Signup = ({ navigation }) => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+
+  const [userData, setUserData] = useState({
+    name: null,
+    email: null,
+    password: null,
+  });
+
   const [nameError, setNameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
@@ -26,17 +33,21 @@ const Signup = ({ navigation }) => {
     setEmailError(null);
     setPasswordError(null);
 
-    if (name === "" || name === null) {
+    if (userData.name === "" || userData.name === null) {
       console.log("Invalid name!");
       setNameError("Please enter a valide name.");
       error = true;
     }
-    if (email === "" || email === null) {
+    if (userData.email === "" || userData.email === null) {
       console.log("Invalid email!");
       setEmailError("Please enter a valide email.");
       error = true;
     }
-    if (password === "" || password === null || password.includes(" ")) {
+    if (
+      userData.password === "" ||
+      userData.password === null ||
+      userData.password.includes(" ")
+    ) {
       console.log("Invalid password!");
       setPasswordError("Please enter a valide password.");
       error = true;
@@ -45,17 +56,19 @@ const Signup = ({ navigation }) => {
     return !error;
   };
 
-  const newUser = () => {
+  const signUp = async (userData) => {
     if (validate()) {
-      let data = {
-        name: name,
-        email: email,
-        password: password,
-      };
-
-      signUp(data)
-        .then((response) => {
-          console.log("Success");
+      try {
+        const response = await axios({
+          url: "http://192.168.1.3:3000/user/new",
+          method: "POST",
+          timeout: 5000,
+          data: userData,
+          headers: { Accept: "application/json" },
+        });
+        console.log(response.data);
+        if (response.data.success) {
+          console.log("User created");
           Alert.alert("Success!", "User registration complete", [
             {
               text: "OK",
@@ -64,26 +77,16 @@ const Signup = ({ navigation }) => {
               },
             },
           ]);
-        })
-        .catch((error) => {
-          console.log("Error");
-        });
+        } else {
+          console.log("Failed to creat user");
+          setEmailError("Email already takken.");
+        }
+      } catch (error) {}
     }
   };
 
-  const signUp = async (data) => {
-    try {
-      const response = await axios({
-        url: "http://192.168.1.3:3000/user/new",
-        method: "POST",
-        timeout: 5000,
-        data: data,
-        headers: { Accept: "application/json" },
-      });
-      return await Promise.resolve(response);
-    } catch (error) {
-      return await Promise.reject(error);
-    }
+  const saveUser = () => {
+    signUp(userData);
   };
 
   return (
@@ -107,7 +110,10 @@ const Signup = ({ navigation }) => {
               style={[styles.textInput]}
               placeholder="Your name herer"
               onChangeText={(value) => {
-                setName(value.trim());
+                setUserData((prevData) => ({
+                  ...prevData,
+                  name: value.trim(),
+                }));
                 setNameError(null);
               }}
             ></TextInput>
@@ -122,7 +128,10 @@ const Signup = ({ navigation }) => {
               style={[styles.textInput]}
               placeholder="Your@email.com"
               onChangeText={(value) => {
-                setEmail(value.trim());
+                setUserData((prevData) => ({
+                  ...prevData,
+                  email: value.trim(),
+                }));
                 setEmailError(null);
               }}
             ></TextInput>
@@ -137,7 +146,7 @@ const Signup = ({ navigation }) => {
               secureTextEntry={true}
               placeholder="Password"
               onChangeText={(value) => {
-                setPassword(value);
+                setUserData((prevData) => ({ ...prevData, password: value }));
                 setPasswordError(null);
               }}
             ></TextInput>
@@ -146,7 +155,7 @@ const Signup = ({ navigation }) => {
             )}
           </View>
           <View style={[styles.formFields]}>
-            <Button title="Save" onPress={newUser} />
+            <Button title="Save" onPress={saveUser} />
           </View>
         </View>
       </KeyboardAvoidingView>

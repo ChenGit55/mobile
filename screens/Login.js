@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import styles from "../styles/CustomStyles";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(null);
@@ -33,7 +34,13 @@ const Login = ({ navigation }) => {
         headers: { Accept: "application/json" },
       });
       console.log(response.status);
-      navigation.navigate("Main");
+
+      AsyncStorage.setItem("TOKEN", response.data.access_token);
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
       setAuthError(false);
       return await Promise.resolve(response);
     } catch (error) {
@@ -41,6 +48,32 @@ const Login = ({ navigation }) => {
       console.log(error);
     }
   };
+
+  const tokenLogin = async (data) => {
+    const response = await axios({
+      url: "http://192.168.1.3:3000/user/token-login",
+      method: "POST",
+      timeout: 5000,
+      data: data,
+      headers: { Accept: "application/json" },
+    });
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Main" }],
+    });
+  };
+
+  useEffect(() => {
+    AsyncStorage.getItem("TOKEN").then((token) => {
+      if (token) {
+        let data = {
+          token: token,
+        };
+        tokenLogin(data);
+      }
+    });
+  }, []);
+
   const signUpHandle = async () => {
     navigation.navigate("Signup");
   };

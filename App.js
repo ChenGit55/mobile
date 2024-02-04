@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./screens/Login";
 import Main from "./screens/Main";
 import Signup from "./screens/Signup";
-import CustomerUpdate from "./screens/CustomerUpdate";
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -40,10 +39,10 @@ function defineInterceptor() {
 }
 
 const Stack = createNativeStackNavigator();
-function MyStack() {
+export default function App() {
   defineInterceptor();
   return (
-    <>
+    <NavigationContainer>
       <StatusBar backgroundColor="#ffff" />
       <Stack.Navigator
         screenOptions={{
@@ -53,16 +52,7 @@ function MyStack() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="CustomerUpdate" component={CustomerUpdate} />
       </Stack.Navigator>
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <MyStack />
     </NavigationContainer>
   );
 }

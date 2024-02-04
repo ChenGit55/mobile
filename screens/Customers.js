@@ -1,4 +1,5 @@
 import {
+  Button,
   FlatList,
   SafeAreaView,
   Text,
@@ -9,9 +10,12 @@ import styles from "../styles/CustomStyles";
 import axios from "axios";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomerUpdate from "./CustomerUpdate";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Customers = ({ navigation }) => {
   const [customers, setCustomers] = useState(null);
+
   const getCustomersData = async () => {
     token = await AsyncStorage.getItem("TOKEN");
     try {
@@ -65,4 +69,15 @@ const Customers = ({ navigation }) => {
   );
 };
 
-export default Customers;
+const CustomersStack = createNativeStackNavigator();
+
+function CustomersStackScreen() {
+  return (
+    <CustomersStack.Navigator screenOptions={{ headerShown: false }}>
+      <CustomersStack.Screen name="Customers List" component={Customers} />
+      <CustomersStack.Screen name="CustomerUpdate" component={CustomerUpdate} />
+    </CustomersStack.Navigator>
+  );
+}
+
+export default CustomersStackScreen;

@@ -1,32 +1,64 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Products from "./Product";
-import Customers from "./Customers";
+import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 import Order from "./Order";
+import CustomersStackScreen from "./Customers";
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+export default function Main() {
   return (
     <Tab.Navigator
       screenOptions={{
         headerTitleAlign: "center",
+
         tabBarStyle: {
-          paddingBottom: 20,
+          paddingBottom: 10,
           borderTopWidth: 0,
           shadowColor: 0,
         },
-        tabBarIcon: () => null,
         headerStyle: { height: 80 },
+        headerRight: () => (
+          <FontAwesome6Icon
+            name="gear"
+            color={"grey"}
+            size={20}
+            style={{ marginRight: 20 }}
+          />
+        ),
       }}
     >
-      <Tab.Screen name="Customers" component={Customers} />
-      <Tab.Screen name="Order" component={Order} />
-      <Tab.Screen name="Products" component={Products} />
+      <Tab.Screen
+        name="Customers"
+        component={CustomersStackScreen}
+        options={{
+          tabBarLabel: "Customers",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6Icon name="people-group" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Order"
+        component={Order}
+        options={{
+          tabBarLabel: "Order",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6Icon name="shop" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Products"
+        component={Products}
+        options={{
+          tabBarLabel: "Products",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome6Icon name="list" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
-}
-
-export default function Main() {
-  return <MyTabs />;
 }

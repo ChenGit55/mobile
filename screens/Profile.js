@@ -1,9 +1,9 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import styles from "../styles/CustomStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-const Profile = ({ navigation }) => {
+const Profile = () => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
 

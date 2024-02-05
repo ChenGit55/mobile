@@ -129,8 +129,7 @@ export default function Main({ navigation }) {
             <TouchableOpacity
               style={{ marginRight: 20 }}
               onPress={() => {
-                setOptionsListVisible(true),
-                  console.log("optionsListVisible:", optionsListVisible);
+                setOptionsListVisible(true);
               }}
             >
               <FontAwesome6Icon

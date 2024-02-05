@@ -46,22 +46,32 @@ const Login = ({ navigation }) => {
       return await Promise.resolve(response);
     } catch (error) {
       setAuthError(true);
-      console.log(error);
+      console.log(error, "handle error");
     }
   };
 
-  const tokenLogin = async (data) => {
-    const response = await axios({
-      url: "http://192.168.1.3:3000/user/token-login",
-      method: "POST",
-      timeout: 5000,
-      data: data,
-      headers: { Accept: "application/json" },
-    });
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Main" }],
-    });
+  const tokenLogin = async (value) => {
+    try {
+      const response = await axios({
+        url: "http://192.168.1.3:3000/user/token-login",
+        method: "POST",
+        timeout: 5000,
+        data: value,
+        headers: { Accept: "application/json" },
+      });
+      AsyncStorage.setItem("TOKEN", response.data.access_token);
+      AsyncStorage.setItem("NAME", response.data.name);
+      AsyncStorage.setItem("EMAIL", response.data.email);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
+      console.log(response.data.access_token, "token login");
+      return response;
+    } catch (error) {
+      console.log(response.status, "response error");
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -71,6 +81,8 @@ const Login = ({ navigation }) => {
           token: token,
         };
         tokenLogin(data);
+      } else {
+        console.log(token, "token error");
       }
     });
   }, []);
@@ -92,7 +104,6 @@ const Login = ({ navigation }) => {
             <Text style={{ color: "red" }}>Invalid email or password!</Text>
           )}
           <View style={[styles.formFields]}>
-            {/* <Text>Email</Text> */}
             <TextInput
               style={[styles.textInput]}
               placeholder="Your@email.com"
@@ -102,7 +113,6 @@ const Login = ({ navigation }) => {
             ></TextInput>
           </View>
           <View style={[styles.formFields]}>
-            {/* <Text>Password</Text> */}
             <TextInput
               style={[styles.textInput]}
               secureTextEntry={true}

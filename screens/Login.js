@@ -91,6 +91,17 @@ const Login = ({ navigation }) => {
               style={[styles.logo]}
             />
           </View>
+          <Text
+            style={{
+              fontSize: 50,
+              fontWeight: "800",
+              color: "navy",
+              textAlign: "center",
+              marginBottom: 20,
+            }}
+          >
+            Study App
+          </Text>
           {authError && (
             <Text style={{ color: "red" }}>Invalid email or password!</Text>
           )}

@@ -10,6 +10,7 @@ import styles from "../styles/CustomStyles";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import axios from "axios";
+import { updateCustomer } from "../services/ApiService";
 
 const CustomerUpdate = ({ navigation }) => {
   const route = useRoute();
@@ -39,13 +40,7 @@ const CustomerUpdate = ({ navigation }) => {
 
   const saveNewCustomer = async () => {
     try {
-      const response = await axios({
-        url: `http://192.168.1.3:3000/client/update/${customer.id}`,
-        method: "PUT",
-        timeout: 5000,
-        data: newCostomerData,
-        headers: { Accept: "application/json" },
-      });
+      const response = await updateCustomer(customer.id, newCostomerData);
       navigation.navigate("Customers");
       return await Promise.resolve(response);
     } catch (error) {

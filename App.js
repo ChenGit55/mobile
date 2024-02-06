@@ -6,11 +6,12 @@ import Main from "./screens/Main";
 import Signup from "./screens/Signup";
 import { StatusBar } from "expo-status-bar";
 import Profile from "./screens/Profile";
-import { defineInterceptor } from "./services/ApiService";
+import { defineInterceptor, tokenInterceptor } from "./services/ApiService";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
-  defineInterceptor();
+  // defineInterceptor();
+  tokenInterceptor();
   return (
     <NavigationContainer>
       <StatusBar backgroundColor="#ffff" />

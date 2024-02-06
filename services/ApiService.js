@@ -58,32 +58,44 @@ export async function listCustomer(token) {
   }
 }
 
-export function defineInterceptor() {
+export async function updateCustomer(id, newCostumerData) {
+  try {
+    return await apiSource(newCostumerData, "PUT", {}, `client/update/${id}`);
+  } catch (error) {}
+}
+
+export function tokenInterceptor() {
   axios.interceptors.response.use(
     (response) => {
       return response;
     },
-    (err) => {
-      return new Promise((resolve, reject) => {
-        const originalReq = err.config;
-        if (err.response.status == 401 && err.config && !err.config._retry) {
-          originalReq._retry = true;
-          AsyncStorage.getItem("TOKEN").then((token) => {
-            let res = axios
-              .put("http://192.168.1.3:3000/token/refresh", { oldToken: token })
-              .then((res) => {
-                AsyncStorage.setItem("TOKEN", res.data.access_token);
-                originalReq.headers[
-                  "Authorization"
-                ] = `Bearer ${res.data.access_token}`;
-                return axios(originalReq);
-              });
-            resolve(res);
-          });
-        } else {
-          reject(err);
+    async (err) => {
+      const originalReq = err.config;
+      if (err.response.status == 401 && err.config && !err.config._retry) {
+        originalReq._retry = true;
+        try {
+          const token = await AsyncStorage.getItem("TOKEN");
+          if (token) {
+            let res = await apiSource(
+              { oldToken: token },
+              "PUT",
+              {},
+              "token/refresh"
+            );
+            AsyncStorage.setItem("TOKEN", res.data.access_token);
+            originalReq.headers[
+              "Authorization"
+            ] = `Bearer ${res.data.access_token}`;
+            return axios(originalReq);
+          } else {
+            throw err;
+          }
+        } catch (error) {
+          throw err;
         }
-      });
+      } else {
+        throw err;
+      }
     }
   );
 }

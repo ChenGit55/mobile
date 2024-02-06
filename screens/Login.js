@@ -9,9 +9,9 @@ import {
   View,
 } from "react-native";
 import styles from "../styles/CustomStyles";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login, tokenLogin } from "../services/ApiService";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(null);
@@ -24,20 +24,16 @@ const Login = ({ navigation }) => {
     password: password,
   };
 
+  const storeLocalData = async (response) => {
+    AsyncStorage.setItem("TOKEN", response.data.access_token);
+    AsyncStorage.setItem("NAME", response.data.name);
+    AsyncStorage.setItem("EMAIL", response.data.email);
+  };
+
   const loginHandle = async () => {
     try {
-      const response = await axios({
-        url: "http://192.168.1.3:3000/user/login",
-        method: "POST",
-        timeout: 5000,
-        data: data,
-        headers: { Accept: "application/json" },
-      });
-      console.log(response.status);
-      AsyncStorage.setItem("TOKEN", response.data.access_token);
-      AsyncStorage.setItem("NAME", response.data.name);
-      AsyncStorage.setItem("EMAIL", response.data.email);
-
+      const response = await login(data);
+      storeLocalData(response);
       navigation.reset({
         index: 0,
         routes: [{ name: "Main" }],
@@ -46,45 +42,40 @@ const Login = ({ navigation }) => {
       return await Promise.resolve(response);
     } catch (error) {
       setAuthError(true);
-      console.log(error, "handle error");
     }
   };
 
-  const tokenLogin = async (value) => {
+  const tokenLoginHandle = async (token) => {
     try {
-      const response = await axios({
-        url: "http://192.168.1.3:3000/user/token-login",
-        method: "POST",
-        timeout: 5000,
-        data: value,
-        headers: { Accept: "application/json" },
-      });
-      AsyncStorage.setItem("TOKEN", response.data.access_token);
-      AsyncStorage.setItem("NAME", response.data.name);
-      AsyncStorage.setItem("EMAIL", response.data.email);
+      const response = await tokenLogin(token);
+      storeLocalData(response);
       navigation.reset({
         index: 0,
         routes: [{ name: "Main" }],
       });
-      console.log(response.data.access_token, "token login");
       return response;
     } catch (error) {
-      console.log(response.status, "response error");
       throw error;
     }
   };
 
   useEffect(() => {
-    AsyncStorage.getItem("TOKEN").then((token) => {
-      if (token) {
-        let data = {
-          token: token,
-        };
-        tokenLogin(data);
-      } else {
-        console.log(token, "token error");
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("TOKEN");
+        if (token) {
+          let data = {
+            token: token,
+          };
+          await tokenLoginHandle(data);
+        } else {
+          console.log("Token not found in AsyncStorage");
+        }
+      } catch (error) {
+        console.error("Error while retrieving token from AsyncStorage:", error);
       }
-    });
+    };
+    checkToken();
   }, []);
 
   const signUpHandle = async () => {

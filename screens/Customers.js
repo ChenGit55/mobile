@@ -7,12 +7,12 @@ import {
   View,
 } from "react-native";
 import styles from "../styles/CustomStyles";
-import axios from "axios";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomerUpdate from "./CustomerUpdate";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
+import { listCustomer } from "../services/ApiService";
 
 const Customers = ({ navigation }) => {
   const [customers, setCustomers] = useState(null);
@@ -20,12 +20,7 @@ const Customers = ({ navigation }) => {
   const getCustomersData = async () => {
     token = await AsyncStorage.getItem("TOKEN");
     try {
-      const response = await axios.get("http://192.168.1.3:3000/client/list", {
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const response = await listCustomer(token);
       setCustomers(response.data.sort((a, b) => a.id - b.id));
     } catch (error) {
       console.error("Erro na chamada Axios", error);

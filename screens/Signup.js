@@ -9,14 +9,10 @@ import {
   Text,
 } from "react-native";
 import styles from "../styles/CustomStyles";
-import axios from "axios";
 import { useState } from "react";
+import { newUser } from "../services/ApiService";
 
 const Signup = ({ navigation }) => {
-  const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-
   const [userData, setUserData] = useState({
     name: null,
     email: null,
@@ -59,13 +55,7 @@ const Signup = ({ navigation }) => {
   const signUp = async (userData) => {
     if (validate()) {
       try {
-        const response = await axios({
-          url: "http://192.168.1.3:3000/user/new",
-          method: "POST",
-          timeout: 5000,
-          data: userData,
-          headers: { Accept: "application/json" },
-        });
+        const response = await newUser(userData);
         console.log(response.data);
         if (response.data.success) {
           console.log("User created");

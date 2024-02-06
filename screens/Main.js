@@ -43,12 +43,18 @@ export default function Main({ navigation }) {
       {
         text: "OK",
         onPress: () => {
-          AsyncStorage.setItem("TOKEN", "").then(
+          AsyncStorage.clear().then(() => {
             navigation.reset({
               index: 0,
               routes: [{ name: "Login" }],
-            })
-          );
+            });
+          });
+          // AsyncStorage.setItem("TOKEN", "").then(
+          //   navigation.reset({
+          //     index: 0,
+          //     routes: [{ name: "Login" }],
+          //   })
+          // );
         },
       },
     ]);

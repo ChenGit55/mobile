@@ -1,9 +1,9 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, TouchableOpacity, View } from "react-native";
 import styles from "../styles/CustomStyles";
 
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 
-const Order = ({}) => {
+const Order = () => {
   return (
     <SafeAreaView style={[styles.screenContainer]}>
       <TouchableOpacity>

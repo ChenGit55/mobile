@@ -64,6 +64,12 @@ export async function updateCustomer(id, newCostumerData) {
   } catch (error) {}
 }
 
+export async function deleteCustomer(id) {
+  try {
+    return await apiSource(null, "DELETE", {}, `client/delete/${id}`);
+  } catch (error) {}
+}
+
 export function tokenInterceptor() {
   axios.interceptors.response.use(
     (response) => {

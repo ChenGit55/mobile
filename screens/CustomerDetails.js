@@ -10,7 +10,7 @@ import {
 import styles from "../styles/CustomStyles";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import { updateCustomer } from "../services/ApiService";
+import { deleteCustomer, updateCustomer } from "../services/ApiService";
 
 const UpdateCustomer = ({ navigation }) => {
   const route = useRoute();
@@ -47,8 +47,8 @@ const UpdateCustomer = ({ navigation }) => {
         {
           text: "OK",
           onPress: () => {
-            navigation.navigate("CustomersList");
             const response = updateCustomer(customer.id, newCostomerData);
+            navigation.navigate("CustomersList");
             return Promise.resolve(response);
           },
         },
@@ -56,6 +56,24 @@ const UpdateCustomer = ({ navigation }) => {
     } catch (error) {
       return await Promise.reject(error);
     }
+  };
+
+  const handleDeleteCustomer = async () => {
+    try {
+      Alert.alert("Confirm", "Are you sure you want to delete customer?", [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "Yes, delete it.",
+          onPress: () => {
+            const response = deleteCustomer(customer.id);
+            navigation.navigate("CustomersList");
+            return Promise.resolve(response);
+          },
+        },
+      ]);
+    } catch (error) {}
   };
 
   return (
@@ -92,6 +110,9 @@ const UpdateCustomer = ({ navigation }) => {
           ></TextInput>
         </View>
         <Button title="Save" onPress={saveNewCustomer} />
+        <View style={{ marginTop: 10 }}>
+          <Button title="Delete" onPress={handleDeleteCustomer} color={"red"} />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

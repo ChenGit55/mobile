@@ -9,11 +9,10 @@ import {
 import styles from "../styles/CustomStyles";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CustomerUpdate from "./Updatecustomer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 import { listCustomer } from "../services/ApiService";
-import UpdateCustomer from "./Updatecustomer";
+import UpdateCustomer from "./CustomerDetails";
 import NewCostumer from "./NewCustomer";
 
 const Customers = ({ navigation }) => {

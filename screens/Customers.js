@@ -38,11 +38,12 @@ const Customers = ({ navigation }) => {
     navigation.navigate("NewCustomer");
   };
   return (
-    <SafeAreaView style={[styles.screenContainer]}>
+    <SafeAreaView
+      style={[styles.screenContainer, { justifyContent: "flex-start" }]}
+    >
       <View
         style={{
           width: "100%",
-          marginTop: 40,
           padding: 20,
         }}
       >
@@ -53,38 +54,51 @@ const Customers = ({ navigation }) => {
         >
           <TouchableOpacity
             style={{
-              width: 40,
-              height: 40,
-              borderWidth: 1,
+              padding: 3,
+              paddingHorizontal: 15,
+              flexDirection: "row",
               borderBlockColor: "green",
               borderRadius: 50,
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: "green",
             }}
             onPress={plusHandle}
           >
-            <FontAwesome6Icon name="plus" size={30} color="green" />
+            <Text
+              style={{
+                fontWeight: "300",
+                fontSize: 15,
+                color: "white",
+                marginRight: 5,
+              }}
+            >
+              New Customer
+            </Text>
+            <FontAwesome6Icon name="plus" size={10} color="white" />
           </TouchableOpacity>
         </View>
-        <FlatList
-          data={customers}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderRadius: 20,
-                marginVertical: 5,
-                padding: 20,
-              }}
-              onPress={() => editHandle(item)}
-            >
-              <Text>{item.name}</Text>
-              <Text>{item.email}</Text>
-              <Text>{item.cpf}</Text>
-            </TouchableOpacity>
-          )}
-        />
+        <View style={{ height: "90%", backgroundColor: "white" }}>
+          <FlatList
+            data={customers}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 20,
+                  marginVertical: 5,
+                  padding: 20,
+                }}
+                onPress={() => editHandle(item)}
+              >
+                <Text>{item.name}</Text>
+                <Text>{item.email}</Text>
+                <Text>{item.cpf}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

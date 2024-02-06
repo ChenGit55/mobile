@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   KeyboardAvoidingView,
   SafeAreaView,
@@ -9,10 +10,9 @@ import {
 import styles from "../styles/CustomStyles";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import axios from "axios";
 import { updateCustomer } from "../services/ApiService";
 
-const CustomerUpdate = ({ navigation }) => {
+const UpdateCustomer = ({ navigation }) => {
   const route = useRoute();
   const { customer } = route.params;
 
@@ -40,9 +40,19 @@ const CustomerUpdate = ({ navigation }) => {
 
   const saveNewCustomer = async () => {
     try {
-      const response = await updateCustomer(customer.id, newCostomerData);
-      navigation.navigate("Customers");
-      return await Promise.resolve(response);
+      Alert.alert("Confirm", "Are you sure you want to update customer?", [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            navigation.navigate("CustomersList");
+            const response = updateCustomer(customer.id, newCostomerData);
+            return Promise.resolve(response);
+          },
+        },
+      ]);
     } catch (error) {
       return await Promise.reject(error);
     }
@@ -87,4 +97,4 @@ const CustomerUpdate = ({ navigation }) => {
   );
 };
 
-export default CustomerUpdate;
+export default UpdateCustomer;

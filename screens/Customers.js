@@ -9,10 +9,12 @@ import {
 import styles from "../styles/CustomStyles";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CustomerUpdate from "./CustomerUpdate";
+import CustomerUpdate from "./Updatecustomer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
 import { listCustomer } from "../services/ApiService";
+import UpdateCustomer from "./Updatecustomer";
+import NewCostumer from "./NewCustomer";
 
 const Customers = ({ navigation }) => {
   const [customers, setCustomers] = useState(null);
@@ -33,6 +35,9 @@ const Customers = ({ navigation }) => {
     navigation.navigate("CustomerUpdate", { customer });
   };
 
+  const plusHandle = async () => {
+    navigation.navigate("NewCustomer");
+  };
   return (
     <SafeAreaView style={[styles.screenContainer]}>
       <View
@@ -57,6 +62,7 @@ const Customers = ({ navigation }) => {
               justifyContent: "center",
               alignItems: "center",
             }}
+            onPress={plusHandle}
           >
             <FontAwesome6Icon name="plus" size={30} color="green" />
           </TouchableOpacity>
@@ -90,8 +96,9 @@ const CustomersStack = createNativeStackNavigator();
 function CustomersStackScreen() {
   return (
     <CustomersStack.Navigator screenOptions={{ headerShown: false }}>
-      <CustomersStack.Screen name="Customers List" component={Customers} />
-      <CustomersStack.Screen name="CustomerUpdate" component={CustomerUpdate} />
+      <CustomersStack.Screen name="CustomersList" component={Customers} />
+      <CustomersStack.Screen name="NewCustomer" component={NewCostumer} />
+      <CustomersStack.Screen name="CustomerUpdate" component={UpdateCustomer} />
     </CustomersStack.Navigator>
   );
 }

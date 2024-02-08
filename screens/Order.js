@@ -8,7 +8,7 @@ const Order = () => {
     <SafeAreaView style={[styles.screenContainer]}>
       <TouchableOpacity>
         <View>
-          <FontAwesome6Icon name="rocket" size={30} color="#900" />
+          <FontAwesome6Icon name="rocket" size={30} color="#0381ab" />
         </View>
       </TouchableOpacity>
     </SafeAreaView>

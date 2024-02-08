@@ -111,6 +111,7 @@ const Login = ({ navigation }) => {
               placeholder="Your@email.com"
               onChangeText={(value) => {
                 setEmail(value);
+                setAuthError(false);
               }}
             ></TextInput>
           </View>

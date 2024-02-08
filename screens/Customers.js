@@ -1,7 +1,7 @@
 import {
-  Button,
   FlatList,
   SafeAreaView,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -44,57 +44,29 @@ const Customers = ({ navigation }) => {
       <View
         style={{
           width: "100%",
-          padding: 20,
         }}
       >
-        <View
-          style={{
-            alignItems: "flex-end",
-          }}
-        >
+        <View style={screenStyles.newCustomerButtonContainer}>
           <TouchableOpacity
-            style={{
-              padding: 3,
-              paddingHorizontal: 15,
-              flexDirection: "row",
-              borderBlockColor: "green",
-              borderRadius: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "green",
-            }}
+            style={screenStyles.newCustomerButton}
             onPress={plusHandle}
           >
-            <Text
-              style={{
-                fontWeight: "300",
-                fontSize: 15,
-                color: "white",
-                marginRight: 5,
-              }}
-            >
-              New Customer
-            </Text>
-            <FontAwesome6Icon name="plus" size={10} color="white" />
+            <Text style={screenStyles.newCustomerButtonText}>New Customer</Text>
+            <FontAwesome6Icon name="plus" size={10} color="green" />
           </TouchableOpacity>
         </View>
-        <View style={{ height: "90%", backgroundColor: "white" }}>
+        <View style={screenStyles.customerListContainer}>
           <FlatList
             data={customers}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 20,
-                  marginVertical: 5,
-                  padding: 20,
-                }}
+                style={screenStyles.customerList}
                 onPress={() => editHandle(item)}
               >
-                <Text>{item.name}</Text>
-                <Text>{item.email}</Text>
-                <Text>{item.cpf}</Text>
+                <Text style={screenStyles.customerListText}>{item.name}</Text>
+                <Text style={screenStyles.customerListText}>{item.email}</Text>
+                <Text style={screenStyles.customerListText}>{item.cpf}</Text>
               </TouchableOpacity>
             )}
           />
@@ -117,3 +89,48 @@ function CustomersStackScreen() {
 }
 
 export default CustomersStackScreen;
+
+const screenStyles = StyleSheet.create({
+  newCustomerButtonContainer: {
+    alignItems: "flex-end",
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  newCustomerButton: {
+    padding: 3,
+    paddingHorizontal: 15,
+    paddingBottom: 5,
+    borderWidth: 2,
+    borderColor: "green",
+    flexDirection: "row",
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor: "green",
+  },
+  newCustomerButtonText: {
+    fontWeight: "700",
+    fontSize: 15,
+    color: "green",
+
+    marginRight: 5,
+  },
+
+  customerListContainer: {
+    height: "90%",
+    backgroundColor: "white",
+    marginTop: 1,
+    margin: 20,
+  },
+
+  customerList: {
+    borderRadius: 20,
+    marginVertical: 5,
+    padding: 20,
+    backgroundColor: "#0381ab",
+  },
+
+  customerListText: {
+    color: "white",
+  },
+});

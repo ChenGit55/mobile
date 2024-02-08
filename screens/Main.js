@@ -2,6 +2,7 @@ import {
   Alert,
   Modal,
   Pressable,
+  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -23,9 +24,9 @@ export default function Main({ navigation }) {
 
   useEffect(() => {
     if (optionsListVisible) {
-      setOptionsIconColor("blue");
+      setOptionsIconColor("#0381ab");
     } else {
-      setOptionsIconColor("gray");
+      setOptionsIconColor("#3b3b3b");
     }
   }, [optionsListVisible]);
 
@@ -49,12 +50,6 @@ export default function Main({ navigation }) {
               routes: [{ name: "Login" }],
             });
           });
-          // AsyncStorage.setItem("TOKEN", "").then(
-          //   navigation.reset({
-          //     index: 0,
-          //     routes: [{ name: "Login" }],
-          //   })
-          // );
         },
       },
     ]);
@@ -64,58 +59,40 @@ export default function Main({ navigation }) {
     <>
       <Modal transparent={true} visible={optionsListVisible}>
         <TouchableWithoutFeedback onPress={() => setOptionsListVisible(false)}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "flex-end",
-              marginTop: 30,
-              marginRight: 30,
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "white",
-                borderRadius: 10,
-                borderWidth: 1,
-                paddingVertical: 10,
-              }}
-            >
-              <Pressable onPress={profileHandle}>
-                <Text
-                  style={{
-                    marginHorizontal: 10,
-                    padding: 5,
-                  }}
-                >
-                  Profile
-                </Text>
+          <View style={[screenStyles.optContainer]}>
+            <View style={screenStyles.optMenu}>
+              <Pressable
+                style={({ pressed }) => [
+                  screenStyles.optButton,
+                  {
+                    backgroundColor: pressed ? "rgb(210, 230, 255)" : "white",
+                  },
+                ]}
+                onPress={profileHandle}
+              >
+                <FontAwesome6Icon
+                  name="user"
+                  size={15}
+                  style={screenStyles.optButtonIcon}
+                />
+                <Text style={screenStyles.optButtonText}>Profile</Text>
               </Pressable>
 
               <Pressable
                 style={({ pressed }) => [
+                  screenStyles.optButton,
                   {
                     backgroundColor: pressed ? "rgb(210, 230, 255)" : "white",
                   },
                 ]}
                 onPress={logoutHandle}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    padding: 5,
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <Text>Logout</Text>
-                  <FontAwesome6Icon
-                    name="right-from-bracket"
-                    size={15}
-                    style={{ marginLeft: 10, marginTop: 2 }}
-                  />
-                </View>
+                <FontAwesome6Icon
+                  name="right-from-bracket"
+                  size={15}
+                  style={screenStyles.optButtonIcon}
+                />
+                <Text style={screenStyles.optButtonText}>Logout</Text>
               </Pressable>
             </View>
           </View>
@@ -124,13 +101,10 @@ export default function Main({ navigation }) {
       <Tab.Navigator
         screenOptions={{
           headerTitleAlign: "center",
-
-          tabBarStyle: {
-            paddingBottom: 10,
-            borderTopWidth: 0,
-            shadowColor: 0,
-          },
           headerStyle: { height: 80 },
+
+          tabBarActiveTintColor: "#8ce2ff",
+          tabBarInactiveTintColor: "#3b3b3b",
           headerRight: () => (
             <TouchableOpacity
               style={{ marginRight: 20 }}
@@ -145,6 +119,13 @@ export default function Main({ navigation }) {
               />
             </TouchableOpacity>
           ),
+          tabBarStyle: {
+            paddingBottom: 10,
+            borderTopWidth: 0,
+            shadowColor: 0,
+            height: 60,
+            backgroundColor: "#0381ab",
+          },
         }}
       >
         <Tab.Screen
@@ -175,9 +156,45 @@ export default function Main({ navigation }) {
             tabBarIcon: ({ color, size }) => (
               <FontAwesome6Icon name="list" color={color} size={size} />
             ),
+            tabBarIconStyle: {
+              color: "red",
+            },
           }}
         />
       </Tab.Navigator>
     </>
   );
 }
+
+const screenStyles = StyleSheet.create({
+  optContainer: {
+    flex: 1,
+    alignItems: "flex-end",
+    marginTop: 30,
+    marginRight: 30,
+  },
+
+  optMenu: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#0381ab",
+    paddingVertical: 10,
+  },
+
+  optButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 30,
+    paddingHorizontal: 15,
+    marginRight: 15,
+  },
+  optButtonIcon: {
+    width: 25,
+    color: "#0381ab",
+  },
+  optButtonText: {
+    fontSize: 16,
+    color: "#0381ab",
+  },
+});
